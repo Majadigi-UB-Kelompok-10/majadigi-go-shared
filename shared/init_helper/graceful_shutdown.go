@@ -14,25 +14,31 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func InitializeGracefulShutdownListener(app *fiber.App, pool *pgxpool.Pool) {
+type ShutdownType struct {
+	app  *fiber.App
+	pool *pgxpool.Pool
+}
+
+func InitializeGracefulShutdownListener(shutdown *ShutdownType) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	<-quit
 
 	fmt.Println("\nShutdown signal received, starting graceful shutdown...")
-
 	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer shutdownCancel()
 
 	fmt.Println("Shutting down HTTP server...")
-	if err := app.ShutdownWithContext(shutdownCtx); err != nil {
+	if err := shutdown.app.ShutdownWithContext(shutdownCtx); err != nil {
 		log.Printf("HTTP server shutdown error: %v\n", err)
 	}
 	fmt.Println("HTTP server shutdown complete")
 
-	fmt.Println("Closing database connections...")
-	pool.Close()
-	fmt.Println("Database connections closed")
+	if shutdown.pool != nil {
+		fmt.Println("Closing database connections...")
+		shutdown.pool.Close()
+		fmt.Println("Database connections closed")
+	}
 
 	if redisCache, ok := cache.GlobalCache.(*cache.RedisCache); ok {
 		fmt.Println("Closing Redis connection...")
