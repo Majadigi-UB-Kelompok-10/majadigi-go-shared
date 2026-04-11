@@ -5,7 +5,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 )
 
 type Cache interface {
@@ -19,7 +18,7 @@ type Cache interface {
 }
 
 type CacheEntry struct {
-	Data      []byte 
+	Data      []byte
 	ExpiresAt time.Time
 }
 
@@ -62,7 +61,7 @@ func (c *SimpleCache) Get(key string) (interface{}, bool) {
 	if !ok || time.Now().After(entry.ExpiresAt) {
 		return nil, false
 	}
-	return entry.Data, true 
+	return entry.Data, true
 }
 
 func (c *SimpleCache) Set(key string, val interface{}, ttl time.Duration) {

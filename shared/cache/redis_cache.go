@@ -42,7 +42,7 @@ func (r *RedisCache) Get(key string) (interface{}, bool) {
 	if err == redis.Nil || err != nil {
 		return nil, false
 	}
-	
+
 	return val, true
 }
 
@@ -71,7 +71,7 @@ func (r *RedisCache) SetImmutable(key string, val interface{}) {
 		return
 	}
 
-	r.client.Set(ctx, key, data, 0) 
+	r.client.Set(ctx, key, data, 0)
 }
 
 func (r *RedisCache) InvalidatePattern(pattern string) {
