@@ -3,13 +3,12 @@ package init_helper
 import (
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/Majadigi-UB-Kelompok-10/majadigi-go-shared/shared/cache"
 )
 
-func InitializeCache() {
-	redisURL := os.Getenv("REDIS_URL")
+func InitializeRedisCache(redis_url string) {
+	redisURL := redis_url
 
 	if redisURL != "" {
 		redisCache, err := cache.NewRedisCache(redisURL)
