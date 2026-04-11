@@ -12,8 +12,10 @@ import (
 )
 
 func InitializeFiberAppConfig(app *fiber.App, origin string) {
+	// Add logger middleware
 	app.Use(logger.New())
 
+	// Add CORS middleware
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     util.GetAllowedOrigins(origin),
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -23,10 +25,12 @@ func InitializeFiberAppConfig(app *fiber.App, origin string) {
 		MaxAge:           3600,
 	}))
 
+	// Add compression middleware
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestSpeed,
 	}))
 
+	// Add rate limiting middleware
 	app.Use(limiter.New(limiter.Config{
 		Max:        100,
 		Expiration: 1 * time.Minute,
