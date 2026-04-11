@@ -15,8 +15,8 @@ import (
 )
 
 type ShutdownType struct {
-	app  *fiber.App
-	pool *pgxpool.Pool
+	App  *fiber.App
+	Pool *pgxpool.Pool
 }
 
 func InitializeGracefulShutdownListener(shutdown *ShutdownType) {
@@ -29,14 +29,14 @@ func InitializeGracefulShutdownListener(shutdown *ShutdownType) {
 	defer shutdownCancel()
 
 	fmt.Println("Shutting down HTTP server...")
-	if err := shutdown.app.ShutdownWithContext(shutdownCtx); err != nil {
+	if err := shutdown.App.ShutdownWithContext(shutdownCtx); err != nil {
 		log.Printf("HTTP server shutdown error: %v\n", err)
 	}
 	fmt.Println("HTTP server shutdown complete")
 
-	if shutdown.pool != nil {
+	if shutdown.Pool != nil {
 		fmt.Println("Closing database connections...")
-		shutdown.pool.Close()
+		shutdown.Pool.Close()
 		fmt.Println("Database connections closed")
 	}
 
