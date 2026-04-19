@@ -29,8 +29,8 @@ func AutoRegister(gatewayDBUrl string, slugName string, pageURL string) {
 
 	_, err = dbGateway.Exec(context.Background(), query, slugName, pageURL)
 	if err != nil {
-		log.Printf("❌ Gagal mendaftarkan '%s': %v\n", slugName, err)
+		log.Printf("Gagal mendaftarkan '%s': %v\n", slugName, err)
 	} else {
-		fmt.Printf("✅ Berhasil! Service '%s' mendaftarkan diri ke Gateway\n", slugName)
+		fmt.Printf("Berhasil! Service '%s' mendaftarkan diri ke Gateway\n", slugName)
 	}
 }
