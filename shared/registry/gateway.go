@@ -9,7 +9,7 @@ import (
 
 func AutoRegisterFull(gatewayDBUrl, slugName, pageURL, title, iconURL, description string, categoryIDs []string) {
       if gatewayDBUrl == "" {                                                                                                                                                                                                         
-          log.Println("gAutoRegisterFull dibatalkan: URL DB Gateway tidak ditemukan")
+          log.Println("AutoRegisterFull dibatalkan: URL DB Gateway tidak ditemukan")
           return                                                                                                                                                                                                                      
       }                                                                                                                                                                                                                               
                                                                                                                                                                                                                                       
